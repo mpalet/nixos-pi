@@ -34,7 +34,7 @@
     */
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
-      fsType = "ext4";
+      fsType = "btrfs";
     };
   };
 
@@ -48,12 +48,8 @@
     wget
     nano
     bind
-    kubectl
-    kubernetes-helm
     iptables
-    openvpn
     python3
-    nodejs
     docker-compose
   ];
 
@@ -64,25 +60,16 @@
 
   # Some sample service.
   # Use dnsmasq as internal LAN DNS resolver.
-  services.dnsmasq = {
-    enable = false;
-    settings.servers = [ "8.8.8.8" "8.8.4.4" "1.1.1.1" ];
-    settings.extraConfig = ''
-      address=/fenrir.test/192.168.100.6
-      address=/recalune.test/192.168.100.7
-      address=/eth.nixpi.test/192.168.100.3
-      address=/wlan.nixpi.test/192.168.100.4
-    '';
-  };
-
-  # services.openvpn = {
-  #     # You can set openvpn connection
-  #     servers = {
-  #       privateVPN = {
-  #         config = "config /home/nixos/vpn/privatvpn.conf";
-  #       };
-  #     };
-  # };
+#  services.dnsmasq = {
+#    enable = false;
+#    settings.servers = [ "8.8.8.8" "8.8.4.4" "1.1.1.1" ];
+#    settings.extraConfig = ''
+#      address=/fenrir.test/192.168.100.6
+#      address=/recalune.test/192.168.100.7
+#      address=/eth.nixpi.test/192.168.100.3
+#      address=/wlan.nixpi.test/192.168.100.4
+#    '';
+#  };
 
   programs.zsh = {
     enable = true;
@@ -103,24 +90,19 @@
     enableRedistributableFirmware = true;
     firmware = [ pkgs.wireless-regdb ];
   };
+
   # Networking
   networking = {
     # useDHCP = true;
     interfaces.wlan0 = {
-      useDHCP = false;
-      ipv4.addresses = [{
-        # I used static IP over WLAN because I want to use it as local DNS resolver
-        address = "192.168.1.4";
-        prefixLength = 24;
-      }];
+      useDHCP = true;
     };
     interfaces.eth0 = {
-      useDHCP = true;
-      # I used DHCP because sometimes I disconnect the LAN cable
-      #ipv4.addresses = [{
-      #  address = "192.168.100.3";
-      #  prefixLength = 24;
-      #}];
+      useDHCP = false;
+      ipv4.addresses = [{
+        address = "192.168.1.2";
+        prefixLength = 24;
+      }];
     };
 
     # Enabling WIFI
@@ -150,22 +132,22 @@
   users.groups = {
     nixos = {
       gid = 1000;
-      name = "nixos";
+      name = "marc";
     };
   };
   users.users = {
-    nixos = {
+    marc = {
       uid = 1000;
-      home = "/home/nixos";
-      name = "nixos";
-      group = "nixos";
+      home = "/home/marc";
+      name = "marc";
+      group = "marc";
       shell = pkgs.zsh;
       extraGroups = [ "wheel" "docker" ];
     };
   };
   users.users.root.openssh.authorizedKeys.keys = [
     # This is my public key
-    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDqlXJv/noNPmZMIfjJguRX3O+Z39xeoKhjoIBEyfeqgKGh9JOv7IDBWlNnd3rHVnVPzB9emiiEoAJpkJUnWNBidL6vPYn13r6Zrt/2WLT6TiUFU026ANdqMjIMEZrmlTsfzFT+OzpBqtByYOGGe19qD3x/29nbszPODVF2giwbZNIMo2x7Ww96U4agb2aSAwo/oQa4jQsnOpYRMyJQqCUhvX8LzvE9vFquLlrSyd8khUsEVV/CytmdKwUUSqmlo/Mn7ge/S12rqMwmLvWFMd08Rg9NHvRCeOjgKB4EI6bVwF8D6tNFnbsGVzTHl7Cosnn75U11CXfQ6+8MPq3cekYr lucernae@lombardia-N43SM"
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClPIanBAeoqiz3vFLtQdS5lMHeaqtUD8aHPZ0z8JtkYVTiWxv4qHaD9RkPnxgnihAB2oZ+mKEQcHeKi55Qt5fWXr4ytBwSIIBfaX3r4IfuQkAkFHWW0izKz9K6k7xHVFLdjxaCI1PKo7ApH4cpCRHMrANHDdfr5zL1vwRVv3S/uWm5dXVvUKh/Uu2fMi/wYCGXAzOmpQIRlT2Uid1+r8u0Q08H09j/pQn+7OTAHgjaQmf7eZNN7wHfPz4kAOqQHZGnLJ2tKWTBMn9YvgzxJcjqkRwgBNVthMEzfX5M1ymPHZjPxpsD4CiY89mdnBcQ0vVI7CqURysiFL0100n3VS9x marc@localhost"
   ];
   system.stateVersion = "23.05";
 }
