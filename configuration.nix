@@ -133,7 +133,7 @@
     marc = {
       isNormalUser = true;
       uid = 1000;
-      home = "/home/marc"
+      home = "/home/marc";
       extraGroups = [ "wheel" "docker" ];
       openssh.authorizedKeys.keys = [
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClPIanBAeoqiz3vFLtQdS5lMHeaqtUD8aHPZ0z8JtkYVTiWxv4qHaD9RkPnxgnihAB2oZ+mKEQcHeKi55Qt5fWXr4ytBwSIIBfaX3r4IfuQkAkFHWW0izKz9K6k7xHVFLdjxaCI1PKo7ApH4cpCRHMrANHDdfr5zL1vwRVv3S/uWm5dXVvUKh/Uu2fMi/wYCGXAzOmpQIRlT2Uid1+r8u0Q08H09j/pQn+7OTAHgjaQmf7eZNN7wHfPz4kAOqQHZGnLJ2tKWTBMn9YvgzxJcjqkRwgBNVthMEzfX5M1ymPHZjPxpsD4CiY89mdnBcQ0vVI7CqURysiFL0100n3VS9x marc@localhost"
