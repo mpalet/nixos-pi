@@ -33,19 +33,6 @@
                 }
               ];
             };
-            raspberry-pi_3_default = nixosSystem {
-              system = "aarch64-linux";
-              modules = [
-                "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64-installer.nix"
-                # replace this with your target configuration
-                ./configuration.default.nix
-
-                # extra config for sdImage generator
-                {
-                  sdImage.compressImage = false;
-                }
-              ];
-            };
           };
       };
       devShell =
